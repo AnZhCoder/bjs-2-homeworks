@@ -7,13 +7,13 @@ class PrintEditionItem {
 		this.type = type;
 	}
 
-	fix() {
+	fix = () => {
 		if (this._state * 1.5 <= 100) {
 			return (this._state *= 1.5);
 		} else {
 			return (this._state = 100);
 		}
-	}
+	};
 
 	get state() {
 		return this._state;
@@ -69,15 +69,12 @@ class Library {
 		this.books = books;
 	}
 
-	addBook(book) {
-		return this.books.push(book);
-	}
+	addBook = (book) => this.books.push(book);
 
-	findBookBy(type, value) {
-		return this.books.find((book) => book[type] === value) || null;
-	}
+	findBookBy = (type, value) =>
+		this.books.find((book) => book[type] === value) || null;
 
-	giveBookByName(bookName) {
+	giveBookByName = (bookName) => {
 		const result = this.books.find((book) => book.name === bookName);
 		if (result) {
 			this.books = this.books.filter((book) => book.name !== bookName);
@@ -85,7 +82,7 @@ class Library {
 		} else {
 			return null;
 		}
-	}
+	};
 }
 
 const library = new Library("Библиотека имени Ленина");
@@ -165,7 +162,7 @@ class Student {
 	}
 }
 
-const student = new Student("sgrs", "male", "23");
+const student = new Student("Antony", "male", "23");
 
 class Journal {
 	constructor(subject, mark = []) {
