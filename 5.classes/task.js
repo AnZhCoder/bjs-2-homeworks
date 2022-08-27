@@ -127,7 +127,7 @@ class Student {
 
 	addMark = (mark, subject) => {
 		const result = this.subjects.find((item => item[subject]));
-		
+
 		if (!result) {
 			this.subjects.push({
 				[subject]: [mark],
@@ -152,9 +152,13 @@ class Student {
 	}
 
 	getAverage = () => {
+		let fullMarks = [];
+		this.subjects.forEach((mark) => {
+			fullMarks.push(Object.values(mark)[0])
+		})
 
-
-		//return `Средний балл по всем предметам - ${avg}`
+		fullMarks = fullMarks.flat();
+		return +((fullMarks.reduce((total, mark) => total + mark, 0) / fullMarks.length).toFixed(2))
 	}
 
 }
@@ -162,10 +166,11 @@ const student = new Student('sgrs', 'male', '23')
 
 student.addMark(3, "algebra");
 student.addMark(5, "algebra");
+student.addMark(5, "history");
+student.addMark(5, "history");
+student.addMark(5, "filosofy");
+student.addMark(5, "filosofy");
 
-console.log(student.getAverageBySubject("algebra"))
 
 
-
-
-console.log(student.subjects)
+student.getAverage()
