@@ -117,68 +117,55 @@ class Student {
 		this.gender = gender;
 		this.age = age;
 		this.subjects = subjects;
+
 	}
 
-	exclude(reason) {
+	exclude = (reason) => {
 		delete this.subjects;
 		this.excluded = reason;
 	}
 
-	addJournal(journal) {
-		return this.subjects.push(journal);
-	}
-
-	addMark(value, discip) {
-		const result = this.subjects.find((item) => item.subject === discip);
+	addMark = (mark, subject) => {
+		const result = this.subjects.find((item => item[subject]));
+		
 		if (!result) {
-			return "Несуществующий предмет";
-		} else if (value < 0 || value > 5) {
-			return "Ошибка, оценка должна быть числом от 1 до 5";
-		} else {
-			result.mark.push(value);
+			this.subjects.push({
+				[subject]: [mark],
+			})
+		} else if (mark < 0 || mark > 5) {
+			return 'Ошибка, оценка должна быть числом от 1 до 5'
+		} else if (result && mark > 0 || mark <= 5) {
+			result[subject].push(mark)
 		}
 	}
 
-	getAverageBySubject(discip) {
-		const result = this.subjects.find((item) => item.subject === discip);
+	getAverageBySubject = (subject) => {
+		const result = this.subjects.find((item => item[subject]))
+		let avg = 0;
+
 		if (!result) {
-			return "Несуществующий предмет";
+			return 'Несуществующий предмет'
 		} else {
-			const avg = +(
-				result.mark.reduce((total, mark) => total + mark, 0) /
-				result.mark.length
-			).toFixed(1);
-			return `Средний балл по предмету ${discip} ${avg}`;
+			avg = +(result[subject].reduce((total, mark) => total + mark, 0) / result[subject].length).toFixed(1);
 		}
+		return avg
 	}
 
-	getAverage() {
-		const mark = this.subjects.map((item) => item.mark);
-		const fullMark = [].concat(...mark);
-		const avg = +(
-			fullMark.reduce((total, item) => total + item, 0) / fullMark.length
-		).toFixed(2);
-		return `Средний балл по всем предметам - ${avg}`;
+	getAverage = () => {
+
+
+		//return `Средний балл по всем предметам - ${avg}`
 	}
+
 }
+const student = new Student('sgrs', 'male', '23')
 
-const student = new Student("Antony", "male", "23");
+student.addMark(3, "algebra");
+student.addMark(5, "algebra");
 
-class Journal {
-	constructor(subject, mark = []) {
-		this.subject = subject;
-		this.mark = mark;
-	}
-}
+console.log(student.getAverageBySubject("algebra"))
 
-student.addJournal(new Journal("Algebra", []));
-student.addJournal(new Journal("Geometry", []));
-student.addMark(3, "Algebra");
-student.addMark(3, "Algebra");
-student.addMark(5, "Algebra");
-student.addMark(2, "Geometry");
-student.addMark(2, "Geometry");
-student.getAverageBySubject("Algebra");
-console.log(student.getAverage());
-student.getAverage();
-console.log(student.subjects);
+
+
+
+console.log(student.subjects)
