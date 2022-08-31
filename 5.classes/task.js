@@ -69,7 +69,9 @@ class Library {
 		this.books = books;
 	}
 
-	addBook = (book) => this.books.push(book);
+	addBook = (book) => {
+		if (book.state > 30) return this.books.push(book);
+	};
 
 	findBookBy = (type, value) =>
 		this.books.find((book) => book[type] === value) || null;
@@ -117,52 +119,55 @@ class Student {
 		this.gender = gender;
 		this.age = age;
 		this.subjects = subjects;
-
 	}
 
 	exclude = (reason) => {
 		delete this.subjects;
 		this.excluded = reason;
-	}
+	};
 
 	addMark = (mark, subject) => {
-		const result = this.subjects.find((item => item[subject]));
+		const result = this.subjects.find((item) => item[subject]);
 
 		if (!result) {
 			this.subjects.push({
 				[subject]: [mark],
-			})
+			});
 		} else if (mark < 0 || mark > 5) {
-			return 'Ошибка, оценка должна быть числом от 1 до 5'
-		} else if (result && mark > 0 || mark <= 5) {
-			result[subject].push(mark)
+			return "Ошибка, оценка должна быть числом от 1 до 5";
+		} else if ((result && mark > 0) || mark <= 5) {
+			result[subject].push(mark);
 		}
-	}
+	};
 
 	getAverageBySubject = (subject) => {
-		const result = this.subjects.find((item => item[subject]))
+		const result = this.subjects.find((item) => item[subject]);
 		let avg = 0;
 
 		if (!result) {
-			return 'Несуществующий предмет'
+			return "Несуществующий предмет";
 		} else {
-			avg = +(result[subject].reduce((total, mark) => total + mark, 0) / result[subject].length).toFixed(1);
+			avg = +(
+				result[subject].reduce((total, mark) => total + mark, 0) /
+				result[subject].length
+			).toFixed(1);
 		}
-		return avg
-	}
+		return avg;
+	};
 
 	getAverage = () => {
 		let fullMarks = [];
 		this.subjects.forEach((mark) => {
-			fullMarks.push(Object.values(mark)[0])
-		})
+			fullMarks.push(Object.values(mark)[0]);
+		});
 
 		fullMarks = fullMarks.flat();
-		return +((fullMarks.reduce((total, mark) => total + mark, 0) / fullMarks.length).toFixed(2))
-	}
-
+		return +(
+			fullMarks.reduce((total, mark) => total + mark, 0) / fullMarks.length
+		).toFixed(2);
+	};
 }
-const student = new Student('sgrs', 'male', '23')
+const student = new Student("sgrs", "male", "23");
 
 student.addMark(3, "algebra");
 student.addMark(5, "algebra");
@@ -171,6 +176,4 @@ student.addMark(5, "history");
 student.addMark(5, "filosofy");
 student.addMark(5, "filosofy");
 
-
-
-student.getAverage()
+student.getAverage();
